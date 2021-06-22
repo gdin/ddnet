@@ -871,8 +871,16 @@ void CChat::AddLine(int ClientID, int Team, const char *pLine)
 			Client()->Notify("DDNet Chat", aBuf);
 			if(g_Config.m_SndHighlight)
 			{
-				m_pClient->m_pSounds->Play(CSounds::CHN_GUI, SOUND_CHAT_HIGHLIGHT, 0);
-				m_aLastSoundPlayed[CHAT_HIGHLIGHT] = Now;
+				if(g_Config.m_ClOldChatSounds)
+				{
+					m_pClient->m_pSounds->Play(CSounds::CHN_GUI, SOUND_CHAT_HIGHLIGHT, 0);
+					m_aLastSoundPlayed[CHAT_HIGHLIGHT] = Now;
+				}
+				else
+				{
+					m_pClient->m_pSounds->Play(CSounds::CHN_GUI, SOUND_CHAT_CLIENT, 0);
+					m_aLastSoundPlayed[CHAT_CLIENT] = Now;
+				}
 			}
 
 			if(g_Config.m_ClEditor)
@@ -887,8 +895,16 @@ void CChat::AddLine(int ClientID, int Team, const char *pLine)
 		{
 			if((g_Config.m_SndTeamChat || !m_aLines[m_CurrentLine].m_Team) && (g_Config.m_SndChat || m_aLines[m_CurrentLine].m_Team))
 			{
-				m_pClient->m_pSounds->Play(CSounds::CHN_GUI, SOUND_CHAT_CLIENT, 0);
-				m_aLastSoundPlayed[CHAT_CLIENT] = Now;
+				if(g_Config.m_ClOldChatSounds)
+				{
+					m_pClient->m_pSounds->Play(CSounds::CHN_GUI, SOUND_CHAT_CLIENT, 0);
+					m_aLastSoundPlayed[CHAT_CLIENT] = Now;
+				}
+				else
+				{
+					m_pClient->m_pSounds->Play(CSounds::CHN_GUI, SOUND_CHAT_HIGHLIGHT, 0);
+					m_aLastSoundPlayed[CHAT_HIGHLIGHT] = Now;
+				}
 			}
 		}
 	}
